@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/yakup/Desktop/Sql/salesDEv2 (1).db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1500"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,5:mainbrand"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="brand" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="49"/><column index="2" value="68"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">/*1. ismi belirtilen bir personelin sınıfını */
+SELECT &quot;Bekir&quot; as belirtilen_personel, className 
+FROM class Where classID = (SELECT classID FROM employee WHERE empName = &quot;Bekir&quot;);
+
+/*2. belirtilen bir marka araçtan kaç adet satıldığını */
+SELECT &quot;Mercedes&quot; as belirtilen_Marka, COUNT(*) as satis_adedi 
+FROM sales WHERE brandId = (SELECT brandId FROM brand WHERE brandName = &quot;Mercedes&quot;);
+
+/*3. her bir marka araçtan kaç adet satıldığını */
+SELECT brand.brandName, COUNT(*) as toplam_satis 
+FROM sales inner join brand 
+ON brand.brandId=sales.brandID 
+GROUP BY brand.brandName;
+ 
+/*4. ismi belirtilen bir personelin sattığı en pahalı aracın markasını*/
+SELECT &quot;Bekir&quot; as belirtilen_isim, brandName as sattigi_en_pahali_marka FROM brand
+WHERE brandID =
+(SELECT brandId FROM sales WHERE  empId  =
+(SELECT empId FROM employee WHERE empName = &quot;Bekir&quot;) ORDER BY salesPrice DESC LIMIT 1);
+
+/*5. belirtilen tarih aralığında satış yapan personel listesini */
+SELECT employee.empName, sales.salesDate FROM employee inner join sales ON employee.empId = sales.empId
+WHERE salesDate BETWEEN '2022-01-01' and '2022-12-01';
+
+/*6. usta personelin listesini */
+SELECT employee.empName, class.className FROM employee inner Join class
+ON employee.classID = class.classID 
+WHERE class.className = &quot;master&quot;;
+
+/*7. ustalar ile çıraklar arasındaki satış toplamı farkını - istenilen sekilde yapmak icin zaman kalmadi:)*/
+SELECT sum(sales.salesPrice) FROM sales INNER JOIN  employee
+ON employee.empId = sales.empId INNER JOIN class on employee.classID = class.classID WHERE class.className = &quot;master&quot;; /*ustalarin yaptigi toplam satis*/
+
+SELECT sum(sales.salesPrice) FROM sales INNER JOIN  employee
+ON employee.empId = sales.empId INNER JOIN class on employee.classID = class.classID WHERE class.className = &quot;apprentice&quot;; /*ustalarin yaptigi toplam satis*/
+
+/*8. en fazla satış yapan personel ile en az satış yapan personel bilgilerini
+  getiren SQL ifadelerini bulunuz - yetistiremedim */</sql><current_tab id="0"/></tab_sql></sqlb_project>

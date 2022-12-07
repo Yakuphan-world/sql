@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/yakup/Desktop/Sql/salesDE.db" readonly="0" foreign_keys="" case_sensitive_like="" temp_store="" wal_autocheckpoint="" synchronous=""/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1500"/><column_width id="4" width="0"/></tab_structure><tab_browse><current_table name="0,0:"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">/*satışları yakın tarihten uzak tarihe sıralayınız
+satıcı ismine göre yapılan  satışları sıralayınız
+belirtilen bir satıcının satışlarını listeleyiniz
+toplam personel sayısını bulunuz
+kaç farklı marka satılmaktadır
+her bir markadan kaç adet satılmıştır
+araçların toplam alış fiyatı nedir
+araçların toplam satış fiyatı nedir
+her bir satış için ne kadar kar / zarar edildiğini bulunuz
+toplamda ne kadar kar /zarar edildiğini bulunuz
+her bir yıl kaç adet satış gerçekleşmiştir
+adet olarak en fazla satış yapan personel kimdir*/
+
+SELECT*FROM sales WHERE name=&quot;Bekir&quot; ;
+
+SELECT count(distinct name ) as toplam_persinel_sayisi FROM sales ;
+SELECT count(DISTINCT carBrand) FROM sales;
+SELECT carBrand , count(*) FROM sales GROUP BY carBrand ;
+SELECT sum(purchasePrice) FROM sales ;
+SELECT sum(salesPrice) FROM sales ;
+SELECT (- sum(purchasePrice) + sum(salesPrice) ) as kar_ve_zarar FROM  sales;
+ SELECT salesPrice - purchasePrice FROM sales ;
+ 
+ SELECT STRFTIME('%m', salesDate) as month, STRFTIME('%Y', salesDate) as year, count(*) From sales GROUP By year, month ORDER BY year,month;</sql><sql name="SQL 3"> SELECT salesPrice - purchasePrice FROM sales ;
+ 
+ select count(salesDate) as &quot;1=2020 2=2021 3=2022 yillari satis sayilari&quot;
+from Sales
+where salesDate &gt;=  '2020'
+GROUP BY salesDate like &quot;2020%&quot;, salesDate like &quot;2021%&quot;
+ORDER BY salesDate ASC; 
+
+SELECT STRFTIME('%m', salesDate) as month, STRFTIME('%Y', salesDate) as year, count(*) From sales GROUP By year, month ORDER BY year,month;
+
+
+SELECT name,count(*) as toplam_satislar FROM sales GROUP by name ORDER by toplam_satislar LIMIT 1;</sql><current_tab id="0"/></tab_sql></sqlb_project>
